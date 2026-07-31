@@ -6596,5 +6596,18 @@ const QUESTIONS = [
     "explanation": "Đề chưa rõ, nếu \"chủ đạo\" thì là nhà nước, còn \"động lực\" thì là tư nhân",
     "id": 517,
     "type": "single"
+  },
+  {
+    "id": 518,
+    "question": "Điều kiện để ra đời và tồn tại của sản xuất hàng hóa:",
+    "options": {
+      "A": "Số lượng hàng hoá làm ra trong một đơn vị thời gian tăng lên",
+      "B": "Số lượng lao động hao phí trong thời gian đó không thay đổi",
+      "C": "Giá trị 1 đơn vị hàng hoá giảm đi"
+    },
+    "answer": [
+      "A"
+    ],
+    "type": "1_option"
   }
 ];
