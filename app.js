@@ -84,8 +84,8 @@ function buildSession() {
 
     if (pool.length === 0) {
         pool = [...QUESTIONS];
-        document.getElementById('filter-set').value = 'all';
-        document.getElementById('filter-type').value = 'all';
+        if (document.getElementById('filter-set')) document.getElementById('filter-set').value = 'all';
+        if (document.getElementById('filter-type')) document.getElementById('filter-type').value = 'all';
     }
 
     // Shuffle
@@ -96,7 +96,10 @@ function buildSession() {
     state.currentQuestions = pool;
     
     // Restore or reset progress for this specific filter combination
-    const filterKey = `${filterSet}|${filterType}|${shuffle}`;
+    const finalFilterSet = document.getElementById('filter-set') ? document.getElementById('filter-set').value : 'all';
+    const finalFilterType = document.getElementById('filter-type') ? document.getElementById('filter-type').value : 'all';
+    const filterKey = `${finalFilterSet}|${finalFilterType}|${shuffle}`;
+    
     if (!state.filterProgress) state.filterProgress = {};
     
     const saved = state.filterProgress[filterKey];
