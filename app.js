@@ -506,15 +506,7 @@ function reviewWrongQuestions() {
 
 // ========== STATS ==========
 function updateStats() {
-    document.getElementById('stats-practiced').textContent = state.seen.size;
-    document.getElementById('stats-mastered').textContent = state.mastered.size;
-    document.getElementById('wrong-count').textContent = state.wrongHistory.size;
-
-    const pct = state.totalAttempts > 0
-        ? Math.round((state.totalCorrect / state.totalAttempts) * 100) + '%'
-        : '0%';
-    document.getElementById('stats-accuracy').textContent = pct;
-    document.getElementById('header-total').textContent = QUESTIONS.length;
+    // Stats bar and header were removed - no-op
 }
 
 // ========== PERSISTENCE ==========
