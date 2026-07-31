@@ -27,7 +27,25 @@ const state = {
 // ========== INIT ==========
 function init() {
     loadProgress();
+
+    // Set UI tabs based on restored mode
+    document.getElementById('tab-quiz').classList.toggle('active', state.mode === 'quiz');
+    document.getElementById('tab-flashcard').classList.toggle('active', state.mode === 'flashcard');
+
     buildSession();
+
+    // Restore saved question position if available
+    if (state.savedQuestionId) {
+        const idx = state.currentQuestions.findIndex(q => q.id === state.savedQuestionId);
+        if (idx !== -1) {
+            state.currentIndex = idx;
+        } else if (typeof state.savedIndex === 'number' && state.savedIndex < state.currentQuestions.length) {
+            state.currentIndex = state.savedIndex;
+        }
+    } else if (typeof state.savedIndex === 'number' && state.savedIndex < state.currentQuestions.length) {
+        state.currentIndex = state.savedIndex;
+    }
+
     render();
     updateStats();
 }
@@ -42,6 +60,7 @@ function switchMode(mode) {
     document.getElementById('tab-flashcard').classList.toggle('active', mode === 'flashcard');
 
     render();
+    saveProgress();
 }
 
 // ========== SESSION BUILDING ==========
@@ -96,6 +115,7 @@ function buildSession() {
 function onFilterChange() {
     buildSession();
     render();
+    saveProgress();
 }
 
 function restartSession() {
@@ -112,6 +132,7 @@ function restartSession() {
     }
 
     render();
+    saveProgress();
 }
 
 // ========== RENDER ==========
@@ -330,6 +351,7 @@ function goNext() {
     // In quiz mode, check if this is the last question
     if (state.mode === 'quiz' && state.currentIndex === total - 1 && state.answered) {
         showQuizResults();
+        saveProgress();
         return;
     }
 
@@ -338,6 +360,7 @@ function goNext() {
         state.answered = false;
         state.flipped = state.mode === 'flashcard';
         render();
+        saveProgress();
     }
 }
 
@@ -347,6 +370,7 @@ function goPrev() {
         state.answered = false;
         state.flipped = state.mode === 'flashcard';
         render();
+        saveProgress();
     }
 }
 
@@ -428,9 +452,14 @@ function updateStats() {
 
 // ========== PERSISTENCE ==========
 function saveProgress() {
+    const q = state.currentQuestions[state.currentIndex];
     const data = {
-        mastered: [...state.mastered],
-        review: [...state.review],
+        currentIndex: state.currentIndex,
+        currentQuestionId: q ? q.id : null,
+        mode: state.mode,
+        filterSet: document.getElementById('filter-set') ? document.getElementById('filter-set').value : 'all',
+        filterType: document.getElementById('filter-type') ? document.getElementById('filter-type').value : 'all',
+        filterShuffle: document.getElementById('filter-shuffle') ? document.getElementById('filter-shuffle').checked : false,
         seen: [...state.seen],
         wrongHistory: [...state.wrongHistory],
         totalAttempts: state.totalAttempts,
@@ -444,12 +473,29 @@ function loadProgress() {
         const raw = localStorage.getItem('mln122_progress');
         if (raw) {
             const data = JSON.parse(raw);
-            state.mastered = new Set(data.mastered || []);
-            state.review = new Set(data.review || []);
             state.seen = new Set(data.seen || []);
             state.wrongHistory = new Set(data.wrongHistory || []);
             state.totalAttempts = data.totalAttempts || 0;
             state.totalCorrect = data.totalCorrect || 0;
+
+            if (data.mode) state.mode = data.mode;
+
+            if (data.filterSet && document.getElementById('filter-set')) {
+                document.getElementById('filter-set').value = data.filterSet;
+            }
+            if (data.filterType && document.getElementById('filter-type')) {
+                document.getElementById('filter-type').value = data.filterType;
+            }
+            if (typeof data.filterShuffle === 'boolean' && document.getElementById('filter-shuffle')) {
+                document.getElementById('filter-shuffle').checked = data.filterShuffle;
+            }
+
+            if (typeof data.currentIndex === 'number') {
+                state.savedIndex = data.currentIndex;
+            }
+            if (data.currentQuestionId) {
+                state.savedQuestionId = data.currentQuestionId;
+            }
         }
     } catch (e) {
         console.warn('Failed to load progress:', e);
@@ -459,8 +505,6 @@ function loadProgress() {
 function resetProgress() {
     if (!confirm('Bạn có chắc muốn reset toàn bộ tiến trình? Hành động này không thể hoàn tác.')) return;
     localStorage.removeItem('mln122_progress');
-    state.mastered = new Set();
-    state.review = new Set();
     state.seen = new Set();
     state.wrongHistory = new Set();
     state.totalAttempts = 0;
@@ -468,9 +512,11 @@ function resetProgress() {
     state.correct = 0;
     state.wrong = 0;
     state.wrongList = [];
+    state.currentIndex = 0;
+    delete state.savedIndex;
+    delete state.savedQuestionId;
     buildSession();
     render();
-    updateStats();
 }
 
 // ========== KEYBOARD SHORTCUTS ==========
