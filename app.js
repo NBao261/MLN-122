@@ -173,7 +173,8 @@ function render() {
         'single': ' · 1 ĐÁP ÁN',
         'multi': ' · NHIỀU ĐÁP ÁN',
         'calc': ' · TÍNH TOÁN',
-        'formula': ' · CÔNG THỨC'
+        'formula': ' · CÔNG THỨC',
+        'congress': ' · ĐẠI HỘI ĐẢNG'
     };
     const filterSetEl = document.getElementById('filter-set');
     const filterVal = filterSetEl ? filterSetEl.value : 'all';

@@ -458,7 +458,7 @@ const QUESTIONS = [
     "answer": "A",
     "explanation": "",
     "id": 36,
-    "type": "single"
+    "type": "congress"
   },
   {
     "question": "Sản xuất hàng hóa ra đời dựa trên",
@@ -496,7 +496,7 @@ const QUESTIONS = [
     "answer": "D",
     "explanation": "",
     "id": 39,
-    "type": "single"
+    "type": "congress"
   },
   {
     "question": "Lý thuyết bàn tay vô hình của Adam Smith được hiểu là: (chọn 3 phương án đúng)",
@@ -1123,7 +1123,7 @@ const QUESTIONS = [
     "answer": "A",
     "explanation": "",
     "id": 88,
-    "type": "single"
+    "type": "congress"
   },
   {
     "question": "Cấu tạo giá trị của tư bản được hiểu là",
@@ -1253,7 +1253,7 @@ const QUESTIONS = [
     "answer": "A",
     "explanation": "",
     "id": 98,
-    "type": "single"
+    "type": "congress"
   },
   {
     "question": "Giá cả độc quyền được hiểu là.",
@@ -1443,7 +1443,7 @@ const QUESTIONS = [
     "answer": "D",
     "explanation": "",
     "id": 113,
-    "type": "single"
+    "type": "congress"
   },
   {
     "question": "Độc quyền được hiểu là:",
@@ -1507,7 +1507,7 @@ const QUESTIONS = [
     "answer": "D",
     "explanation": "",
     "id": 118,
-    "type": "single"
+    "type": "congress"
   },
   {
     "question": "Tích lũy tư bản dẫn đến",
@@ -1713,7 +1713,7 @@ const QUESTIONS = [
     "answer": "B",
     "explanation": "",
     "id": 134,
-    "type": "single"
+    "type": "congress"
   },
   {
     "question": "Trong nền sản xuất hàng hóa, lạm phát là hiện tượng kinh tế tác động trực tiếp đến",
@@ -2224,7 +2224,7 @@ const QUESTIONS = [
     "answer": "B",
     "explanation": "",
     "id": 174,
-    "type": "single"
+    "type": "congress"
   },
   {
     "question": "Tiền tệ ra đời là do nhu cầu.",
@@ -2476,7 +2476,7 @@ const QUESTIONS = [
     "answer": "C",
     "explanation": "",
     "id": 194,
-    "type": "single"
+    "type": "congress"
   },
   {
     "question": "Thị trường giải quyết ba vấn đề kinh tế nào?",
@@ -3961,7 +3961,7 @@ const QUESTIONS = [
     "answer": "C",
     "explanation": "",
     "id": 311,
-    "type": "single"
+    "type": "congress"
   },
   {
     "question": "Thông qua việc giải quyết các quan hệ nào để từ đó giúp cho các chủ thể trong xã hội vận dụng các quy luật kinh tế, tạo động lực để không ngừng sáng tạo, ển toàn diện?",
@@ -5256,7 +5256,7 @@ const QUESTIONS = [
     "answer": "A",
     "explanation": "",
     "id": 413,
-    "type": "single"
+    "type": "congress"
   },
   {
     "question": "(Mô hình kinh tế thị trường định hướng xã hội chủ nghĩa ở nước ta được chính thức nêu ra ở Đại hội nào của Đảng Cộng sản Việt Nam ?",
@@ -5269,7 +5269,7 @@ const QUESTIONS = [
     "answer": "C",
     "explanation": "",
     "id": 414,
-    "type": "single"
+    "type": "congress"
   },
   {
     "question": "Bản chất tiền công trong chủ nghĩa tư bản là:",
