@@ -1535,7 +1535,7 @@ const QUESTIONS = [
     "type": "single"
   },
   {
-    "question": "Những yếu tố cốt lõi của kỹ thuật số trong cách mạng công nghiệp lần thứ 4 là: (chọn 3 phương án)",
+    "question": "Cách mạng công nghiệp lần thứ 3 còn được gọi là:",
     "options": {
       "A": "Cách mạng vô tuyến",
       "B": "Cách mạng điện tử",
@@ -6569,5 +6569,19 @@ const QUESTIONS = [
     "explanation": "Gia nhập năm 2006, trở thành thành viên năm 2007",
     "id": 515,
     "type": "single"
+  },
+  {
+    "question": "Những yếu tố cốt lõi của kỹ thuật số trong cách mạng công nghiệp lần thứ 4 là: (chọn 3 phương án)",
+    "options": {
+      "A": "Công nghệ 3D",
+      "B": "Dữ liệu lớn (Big data)",
+      "C": "Công nghệ sinh học",
+      "D": "Vạn vật kết nối (IoT)",
+      "E": "Trí tuệ nhân tạo (AI)"
+    },
+    "answer": "BDE",
+    "explanation": "",
+    "id": 516,
+    "type": "multi"
   }
 ];
