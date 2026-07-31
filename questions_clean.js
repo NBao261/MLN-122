@@ -1741,7 +1741,7 @@ const QUESTIONS = [
     "type": "single"
   },
   {
-    "question": "Trong nền kinh tế thị trường định hướng xã hội chủ nghĩa, thành phần kinh tế nào giữ vai trò",
+    "question": "Cạnh tranh kinh tế được hiểu là",
     "options": {
       "A": "Sự đấu tranh ở giữa các chủ thể kinh tế, để giành chi phí tối đa cho mình",
       "B": "Sự đấu tranh ở giữa các chủ thể kinh tế, để giành lợi ích tối đa cho mình",
@@ -6583,5 +6583,18 @@ const QUESTIONS = [
     "explanation": "",
     "id": 516,
     "type": "multi"
+  },
+  {
+    "question": "Trong nền kinh tế thị trường định hướng xã hội chủ nghĩa, thành phần kinh tế nào giữ vai trò chủ đạo?",
+    "options": {
+      "A": "Thành phần kinh tế nhà nước",
+      "B": "Thành phần kinh tế tư nhân",
+      "C": "Thành phần kinh tế tập thể",
+      "D": "Thành phần kinh tế có vốn đầu tư nước ngoài"
+    },
+    "answer": "A",
+    "explanation": "Đề chưa rõ, nếu \"chủ đạo\" thì là nhà nước, còn \"động lực\" thì là tư nhân",
+    "id": 517,
+    "type": "single"
   }
 ];
