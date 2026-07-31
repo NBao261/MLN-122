@@ -161,9 +161,6 @@ function render() {
     document.getElementById('q-feedback').style.display = 'none';
     document.getElementById('q-feedback').innerHTML = '';
 
-    // Clear mark buttons container
-    document.getElementById('fc-mark-container').innerHTML = '';
-
     // Flashcard: always show answer, hide flip hint
     const flipHint = document.getElementById('fc-flip-hint');
     flipHint.style.display = 'none';
@@ -219,9 +216,6 @@ function updateModeUI(q) {
     // Remove any existing flashcard answer
     const existingAnswer = document.querySelector('.flashcard-answer-card');
     if (existingAnswer) existingAnswer.remove();
-
-    // Clear mark container
-    document.getElementById('fc-mark-container').innerHTML = '';
 
     if (state.mode === 'flashcard' && state.flipped) {
         showFlashcardAnswer(q);
@@ -327,83 +321,6 @@ function showFlashcardAnswer(q) {
             opt.classList.add('correct');
         }
     });
-
-    // Render mark buttons into fixed container (outside card)
-    const container = document.getElementById('fc-mark-container');
-    const isReview = state.review.has(q.id);
-    const isMastered = state.mastered.has(q.id);
-
-    container.innerHTML = `
-        <div class="fc-mark-buttons">
-            <button class="btn-mark mark-review ${isReview ? 'active' : ''}" onclick="toggleReview(${q.id})">
-                🔴 Cần ôn lại${isReview ? ' ✓' : ''}
-            </button>
-            <button class="btn-mark mark-mastered ${isMastered ? 'active' : ''}" onclick="toggleMastered(${q.id})">
-                🟢 Đã thuộc${isMastered ? ' ✓' : ''}
-            </button>
-        </div>
-    `;
-}
-
-function toggleMastered(qId) {
-    if (state.mastered.has(qId)) {
-        state.mastered.delete(qId);
-    } else {
-        state.mastered.add(qId);
-        state.review.delete(qId);
-    }
-    saveProgress();
-    updateStats();
-    // Re-render mark buttons
-    const q = state.currentQuestions[state.currentIndex];
-    if (state.flipped) {
-        const marks = document.querySelector('.fc-mark-buttons');
-        if (marks) marks.remove();
-        const ansCard = document.querySelector('.flashcard-answer-card');
-        // Re-add mark buttons
-        const markDiv = document.createElement('div');
-        markDiv.className = 'fc-mark-buttons';
-        const isReview = state.review.has(q.id);
-        const isMastered = state.mastered.has(q.id);
-        markDiv.innerHTML = `
-            <button class="btn-mark mark-review ${isReview ? 'active' : ''}" onclick="toggleReview(${q.id})">
-                🔴 Cần ôn lại${isReview ? ' ✓' : ''}
-            </button>
-            <button class="btn-mark mark-mastered ${isMastered ? 'active' : ''}" onclick="toggleMastered(${q.id})">
-                🟢 Đã thuộc${isMastered ? ' ✓' : ''}
-            </button>
-        `;
-        document.getElementById('question-card').appendChild(markDiv);
-    }
-}
-
-function toggleReview(qId) {
-    if (state.review.has(qId)) {
-        state.review.delete(qId);
-    } else {
-        state.review.add(qId);
-        state.mastered.delete(qId);
-    }
-    saveProgress();
-    updateStats();
-    const q = state.currentQuestions[state.currentIndex];
-    if (state.flipped) {
-        const marks = document.querySelector('.fc-mark-buttons');
-        if (marks) marks.remove();
-        const markDiv = document.createElement('div');
-        markDiv.className = 'fc-mark-buttons';
-        const isReview = state.review.has(q.id);
-        const isMastered = state.mastered.has(q.id);
-        markDiv.innerHTML = `
-            <button class="btn-mark mark-review ${isReview ? 'active' : ''}" onclick="toggleReview(${q.id})">
-                🔴 Cần ôn lại${isReview ? ' ✓' : ''}
-            </button>
-            <button class="btn-mark mark-mastered ${isMastered ? 'active' : ''}" onclick="toggleMastered(${q.id})">
-                🟢 Đã thuộc${isMastered ? ' ✓' : ''}
-            </button>
-        `;
-        document.getElementById('question-card').appendChild(markDiv);
-    }
 }
 
 // ========== NAVIGATION ==========
