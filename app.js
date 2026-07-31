@@ -22,6 +22,7 @@ const state = {
     wrongHistory: new Set(),
     totalAttempts: 0,
     totalCorrect: 0,
+    filterProgress: {},
 };
 
 // ========== INIT ==========
@@ -33,18 +34,6 @@ function init() {
     document.getElementById('tab-flashcard').classList.toggle('active', state.mode === 'flashcard');
 
     buildSession();
-
-    // Restore saved question position if available
-    if (state.savedQuestionId) {
-        const idx = state.currentQuestions.findIndex(q => q.id === state.savedQuestionId);
-        if (idx !== -1) {
-            state.currentIndex = idx;
-        } else if (typeof state.savedIndex === 'number' && state.savedIndex < state.currentQuestions.length) {
-            state.currentIndex = state.savedIndex;
-        }
-    } else if (typeof state.savedIndex === 'number' && state.savedIndex < state.currentQuestions.length) {
-        state.currentIndex = state.savedIndex;
-    }
 
     render();
     updateStats();
@@ -105,10 +94,49 @@ function buildSession() {
     }
 
     state.currentQuestions = pool;
-    state.currentIndex = 0;
-    state.correct = 0;
-    state.wrong = 0;
-    state.wrongList = [];
+    
+    // Restore or reset progress for this specific filter combination
+    const filterKey = `${filterSet}|${filterType}|${shuffle}`;
+    if (!state.filterProgress) state.filterProgress = {};
+    
+    const saved = state.filterProgress[filterKey];
+    if (saved) {
+        state.currentIndex = saved.currentIndex || 0;
+        state.correct = saved.correct || 0;
+        state.wrong = saved.wrong || 0;
+        state.wrongList = saved.wrongList || [];
+        
+        if (saved.currentQuestionId) {
+            const idx = state.currentQuestions.findIndex(q => q.id === saved.currentQuestionId);
+            if (idx !== -1) {
+                state.currentIndex = idx;
+            } else if (state.currentIndex >= state.currentQuestions.length) {
+                state.currentIndex = 0;
+            }
+        } else if (state.currentIndex >= state.currentQuestions.length) {
+            state.currentIndex = 0;
+        }
+    } else {
+        // Fallback to legacy savedQuestionId if first time migrating
+        if (state.savedQuestionId && Object.keys(state.filterProgress).length === 0) {
+            const idx = state.currentQuestions.findIndex(q => q.id === state.savedQuestionId);
+            if (idx !== -1) {
+                state.currentIndex = idx;
+            } else if (typeof state.savedIndex === 'number' && state.savedIndex < state.currentQuestions.length) {
+                state.currentIndex = state.savedIndex;
+            } else {
+                state.currentIndex = 0;
+            }
+            delete state.savedQuestionId;
+            delete state.savedIndex;
+        } else {
+            state.currentIndex = 0;
+        }
+        state.correct = 0;
+        state.wrong = 0;
+        state.wrongList = [];
+    }
+
     state.answered = false;
     state.flipped = state.mode === 'flashcard'; // Auto-show in flashcard
 }
@@ -495,17 +523,32 @@ function updateStats() {
 // ========== PERSISTENCE ==========
 function saveProgress() {
     const q = state.currentQuestions[state.currentIndex];
-    const data = {
+    
+    const filterSet = document.getElementById('filter-set') ? document.getElementById('filter-set').value : 'all';
+    const filterType = document.getElementById('filter-type') ? document.getElementById('filter-type').value : 'all';
+    const filterShuffle = document.getElementById('filter-shuffle') ? document.getElementById('filter-shuffle').checked : false;
+    
+    const filterKey = `${filterSet}|${filterType}|${filterShuffle}`;
+    
+    if (!state.filterProgress) state.filterProgress = {};
+    state.filterProgress[filterKey] = {
         currentIndex: state.currentIndex,
         currentQuestionId: q ? q.id : null,
+        correct: state.correct,
+        wrong: state.wrong,
+        wrongList: state.wrongList,
+    };
+
+    const data = {
         mode: state.mode,
-        filterSet: document.getElementById('filter-set') ? document.getElementById('filter-set').value : 'all',
-        filterType: document.getElementById('filter-type') ? document.getElementById('filter-type').value : 'all',
-        filterShuffle: document.getElementById('filter-shuffle') ? document.getElementById('filter-shuffle').checked : false,
+        filterSet: filterSet,
+        filterType: filterType,
+        filterShuffle: filterShuffle,
         seen: [...state.seen],
         wrongHistory: [...state.wrongHistory],
         totalAttempts: state.totalAttempts,
         totalCorrect: state.totalCorrect,
+        filterProgress: state.filterProgress
     };
     localStorage.setItem('mln122_progress', JSON.stringify(data));
 }
@@ -519,6 +562,7 @@ function loadProgress() {
             state.wrongHistory = new Set(data.wrongHistory || []);
             state.totalAttempts = data.totalAttempts || 0;
             state.totalCorrect = data.totalCorrect || 0;
+            state.filterProgress = data.filterProgress || {};
 
             if (data.mode) state.mode = data.mode;
 
@@ -555,6 +599,7 @@ function resetProgress() {
     state.wrong = 0;
     state.wrongList = [];
     state.currentIndex = 0;
+    state.filterProgress = {};
     delete state.savedIndex;
     delete state.savedQuestionId;
     buildSession();
