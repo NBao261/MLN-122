@@ -1058,7 +1058,7 @@ const QUESTIONS = [
       "D": "W= 100000 USD"
     },
     "answer": "A",
-    "explanation": "W = c + v + m = 100000 + 5000 + (5000 x 200%) = 105000 + 10000 = 115000 USD (cho 1000 đôi dệt). Cho 10.000 đôi = 1.150.000 USD.",
+    "explanation": "W = c + v + m\nc = 100000 + 5000 = 105000\nv = 5000\nm = m' × v = 2 × 5000 = 10000\nW = 105000 + 5000 + 10000 = 120000 USD",
     "id": 83,
     "type": "calc"
   },

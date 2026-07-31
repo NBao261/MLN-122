@@ -139,6 +139,11 @@ function restartSession() {
 // ========== RENDER ==========
 function render() {
     const questions = state.currentQuestions;
+
+    // Remove any existing explanation box
+    const existingExpl = document.getElementById('explanation-box');
+    if (existingExpl) existingExpl.remove();
+
     if (questions.length === 0) {
         document.getElementById('q-text').textContent = 'Không có câu hỏi nào phù hợp. Hãy thay đổi bộ lọc.';
         document.getElementById('q-options').innerHTML = '';
@@ -293,7 +298,8 @@ function quizSelectAnswer(selected, q) {
     state.totalAttempts++;
     state.seen.add(q.id);
 
-
+    // Show explanation if available
+    showExplanation(q);
 
     // Enable next
     document.getElementById('btn-next').disabled = false;
@@ -345,6 +351,28 @@ function showFlashcardAnswer(q) {
             opt.classList.add('correct');
         }
     });
+
+    // Show explanation if available
+    showExplanation(q);
+}
+
+function showExplanation(q) {
+    if (!q.explanation) return;
+
+    // Remove any existing explanation box
+    const existing = document.getElementById('explanation-box');
+    if (existing) existing.remove();
+
+    const box = document.createElement('div');
+    box.id = 'explanation-box';
+    box.className = 'explanation-box';
+    box.innerHTML = `<div class="explanation-title">📐 Giải thích</div><pre class="explanation-text">${q.explanation}</pre>`;
+
+    // Insert after options
+    const optionsEl = document.getElementById('q-options');
+    if (optionsEl && optionsEl.parentNode) {
+        optionsEl.parentNode.insertBefore(box, optionsEl.nextSibling);
+    }
 }
 
 // ========== NAVIGATION ==========

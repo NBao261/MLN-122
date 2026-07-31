@@ -1056,3 +1056,38 @@ body {
     background: var(--primary-light);
     color: var(--primary-dark);
 }
+
+/* ========== EXPLANATION BOX ========== */
+.explanation-box {
+    margin-top: 16px;
+    padding: 16px 18px;
+    background: #fffbeb;
+    border: 1.5px solid #f5c842;
+    border-radius: 10px;
+    animation: fadeIn 0.3s ease;
+}
+
+.explanation-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #b45309;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+}
+
+.explanation-text {
+    margin: 0;
+    font-family: 'Courier New', monospace;
+    font-size: 14.5px;
+    line-height: 1.8;
+    color: #1e293b;
+    white-space: pre-wrap;
+    word-break: break-word;
+    background: transparent;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
