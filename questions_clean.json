@@ -6556,5 +6556,18 @@
     "answer": "A",
     "explanation": "",
     "type": "single"
+  },
+  {
+    "question": "Việt Nam trở thành thành viên chính thức của tổ chức thương mại kinh tế thế giới WTO khi nào?",
+    "options": {
+      "A": "2007",
+      "B": "2006",
+      "C": "2005",
+      "D": "2008"
+    },
+    "answer": "A",
+    "explanation": "Gia nhập năm 2006, trở thành thành viên năm 2007",
+    "id": 515,
+    "type": "single"
   }
 ]
