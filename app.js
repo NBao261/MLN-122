@@ -1,0 +1,618 @@
+/* ============================================
+   MLN122 Study App - Application Logic
+   ============================================ */
+
+// ========== STATE ==========
+const state = {
+    mode: 'flashcard', // 'quiz' or 'flashcard'
+
+    // Current session
+    currentQuestions: [],
+    currentIndex: 0,
+    answered: false,
+    flipped: false,
+    correct: 0,
+    wrong: 0,
+    wrongList: [],
+
+    // Persistent
+    mastered: new Set(),
+    review: new Set(),
+    seen: new Set(),
+    wrongHistory: new Set(),
+    totalAttempts: 0,
+    totalCorrect: 0,
+};
+
+// ========== INIT ==========
+function init() {
+    loadProgress();
+    buildSession();
+    render();
+    updateStats();
+}
+
+// ========== MODE SWITCH ==========
+function switchMode(mode) {
+    state.mode = mode;
+    state.answered = false;
+    state.flipped = mode === 'flashcard'; // Auto-show answer in flashcard
+
+    document.getElementById('tab-quiz').classList.toggle('active', mode === 'quiz');
+    document.getElementById('tab-flashcard').classList.toggle('active', mode === 'flashcard');
+
+    render();
+}
+
+// ========== SESSION BUILDING ==========
+function buildSession() {
+    const filterSet = document.getElementById('filter-set').value;
+    const filterType = document.getElementById('filter-type').value;
+    const shuffle = document.getElementById('filter-shuffle').checked;
+
+    let pool = [...QUESTIONS];
+
+    // Filter by set
+    switch (filterSet) {
+        case 'wrong':
+            pool = pool.filter(q => state.wrongHistory.has(q.id));
+            break;
+        case 'unseen':
+            pool = pool.filter(q => !state.seen.has(q.id));
+            break;
+        case 'review':
+            pool = pool.filter(q => state.review.has(q.id));
+            break;
+        case 'mastered':
+            pool = pool.filter(q => state.mastered.has(q.id));
+            break;
+    }
+
+    // Filter by question type
+    if (filterType !== 'all') {
+        pool = pool.filter(q => q.type === filterType);
+    }
+
+    if (pool.length === 0) {
+        pool = [...QUESTIONS];
+        document.getElementById('filter-set').value = 'all';
+        document.getElementById('filter-type').value = 'all';
+    }
+
+    // Shuffle
+    if (shuffle) {
+        pool = shuffleArray(pool);
+    }
+
+    state.currentQuestions = pool;
+    state.currentIndex = 0;
+    state.correct = 0;
+    state.wrong = 0;
+    state.wrongList = [];
+    state.answered = false;
+    state.flipped = state.mode === 'flashcard'; // Auto-show in flashcard
+}
+
+function onFilterChange() {
+    buildSession();
+    render();
+}
+
+function restartSession() {
+    state.correct = 0;
+    state.wrong = 0;
+    state.wrongList = [];
+    state.currentIndex = 0;
+    state.answered = false;
+    state.flipped = state.mode === 'flashcard';
+
+    // Re-shuffle if enabled
+    if (document.getElementById('filter-shuffle').checked) {
+        state.currentQuestions = shuffleArray(state.currentQuestions);
+    }
+
+    render();
+}
+
+// ========== RENDER ==========
+function render() {
+    const questions = state.currentQuestions;
+    if (questions.length === 0) {
+        document.getElementById('q-text').textContent = 'Không có câu hỏi nào phù hợp. Hãy thay đổi bộ lọc.';
+        document.getElementById('q-options').innerHTML = '';
+        return;
+    }
+
+    const q = questions[state.currentIndex];
+    const total = questions.length;
+
+    // Progress
+    const pct = ((state.currentIndex + 1) / total * 100);
+    document.getElementById('progress-label').textContent = `Câu ${state.currentIndex + 1}/${total}`;
+    document.getElementById('progress-bar-fill').style.width = pct + '%';
+    document.getElementById('stat-correct').innerHTML = `Đúng <strong>${state.correct}</strong>`;
+    document.getElementById('stat-wrong').innerHTML = `Sai <strong>${state.wrong}</strong>`;
+
+    // Badge
+    const filterLabels = {
+        'all': 'TẤT CẢ CÂU HỎI',
+        'wrong': 'CÂU ĐÃ SAI',
+        'unseen': 'CÂU CHƯA LÀM',
+        'review': 'CÂU CẦN ÔN LẠI',
+        'mastered': 'CÂU ĐÃ THUỘC'
+    };
+    const typeLabels = {
+        'all': '',
+        'single': ' · 1 ĐÁP ÁN',
+        'multi': ' · NHIỀU ĐÁP ÁN',
+        'calc': ' · TÍNH TOÁN'
+    };
+    const filterVal = document.getElementById('filter-set').value;
+    const typeVal = document.getElementById('filter-type').value;
+    document.getElementById('q-badge').textContent = `${filterLabels[filterVal] || 'TẤT CẢ'}${typeLabels[typeVal] || ''} (${total} CÂU)`;
+
+    // Question
+    document.getElementById('q-text').textContent = q.question;
+
+    // Options
+    renderOptions(q);
+
+    // Feedback
+    document.getElementById('q-feedback').style.display = 'none';
+    document.getElementById('q-feedback').innerHTML = '';
+
+    // Clear mark buttons container
+    document.getElementById('fc-mark-container').innerHTML = '';
+
+    // Flashcard: always show answer, hide flip hint
+    const flipHint = document.getElementById('fc-flip-hint');
+    flipHint.style.display = 'none';
+
+    // Nav buttons
+    document.getElementById('btn-prev').disabled = state.currentIndex === 0;
+
+    // In quiz mode, next is disabled until answered
+    if (state.mode === 'quiz') {
+        document.getElementById('btn-next').disabled = !state.answered;
+        document.getElementById('btn-next').textContent = state.currentIndex === total - 1 ? 'Xem kết quả →' : 'Câu sau →';
+    } else {
+        document.getElementById('btn-next').disabled = state.currentIndex === total - 1;
+        document.getElementById('btn-next').textContent = 'Câu sau →';
+    }
+
+    // Show/hide quiz vs flashcard elements
+    updateModeUI(q);
+}
+
+function renderOptions(q) {
+    const container = document.getElementById('q-options');
+    container.innerHTML = '';
+
+    const keys = Object.keys(q.options);
+
+    keys.forEach(key => {
+        const div = document.createElement('div');
+        div.className = 'option-item';
+        div.setAttribute('data-key', key);
+        div.innerHTML = `
+            <span class="option-letter">${key}</span>
+            <span class="option-text">${q.options[key]}</span>
+        `;
+
+        if (state.mode === 'quiz') {
+            div.addEventListener('click', () => quizSelectAnswer(key, q));
+        } else {
+            // Flashcard mode: options are view-only
+            div.classList.add('fc-readonly');
+        }
+
+        container.appendChild(div);
+    });
+
+    // If flashcard mode and flipped, show answer
+    if (state.mode === 'flashcard' && state.flipped) {
+        showFlashcardAnswer(q);
+    }
+}
+
+function updateModeUI(q) {
+    // Remove any existing flashcard answer
+    const existingAnswer = document.querySelector('.flashcard-answer-card');
+    if (existingAnswer) existingAnswer.remove();
+
+    // Clear mark container
+    document.getElementById('fc-mark-container').innerHTML = '';
+
+    if (state.mode === 'flashcard' && state.flipped) {
+        showFlashcardAnswer(q);
+    }
+}
+
+// ========== QUIZ MODE ==========
+function quizSelectAnswer(selected, q) {
+    if (state.answered) return;
+    state.answered = true;
+
+    const isCorrect = selected === q.answer;
+
+    // Mark all options
+    const options = document.querySelectorAll('.option-item');
+    options.forEach(opt => {
+        const key = opt.getAttribute('data-key');
+        opt.classList.add('disabled');
+
+        // Show correct answer
+        if (q.answer.includes(key) && q.answer.length <= 2) {
+            opt.classList.add('correct');
+        } else if (key === q.answer) {
+            opt.classList.add('correct');
+        }
+    });
+
+    // Mark selected
+    const selectedEl = document.querySelector(`.option-item[data-key="${selected}"]`);
+
+    if (isCorrect) {
+        selectedEl.classList.add('correct');
+        state.correct++;
+        state.totalCorrect++;
+    } else {
+        selectedEl.classList.add('wrong');
+        selectedEl.style.animation = 'shake 0.4s ease';
+        state.wrong++;
+        state.wrongList.push({
+            question: q.question,
+            yourAnswer: selected + '. ' + (q.options[selected] || selected),
+            correctAnswer: q.answer + '. ' + (q.options[q.answer] || q.answer)
+        });
+        state.wrongHistory.add(q.id);
+
+        // Also highlight correct
+        const correctEl = document.querySelector(`.option-item[data-key="${q.answer[0]}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+    }
+
+    state.totalAttempts++;
+    state.seen.add(q.id);
+
+
+
+    // Enable next
+    document.getElementById('btn-next').disabled = false;
+
+    // Update stats
+    document.getElementById('stat-correct').innerHTML = `Đúng <strong>${state.correct}</strong>`;
+    document.getElementById('stat-wrong').innerHTML = `Sai <strong>${state.wrong}</strong>`;
+
+    saveProgress();
+    updateStats();
+}
+
+// ========== FLASHCARD MODE ==========
+
+function flipCard() {
+    state.flipped = !state.flipped;
+    const q = state.currentQuestions[state.currentIndex];
+
+    if (state.flipped) {
+        showFlashcardAnswer(q);
+        state.seen.add(q.id);
+        saveProgress();
+        updateStats();
+    } else {
+        // Hide answer
+        const ansCard = document.querySelector('.flashcard-answer-card');
+        if (ansCard) ansCard.remove();
+        const markBtns = document.querySelector('.fc-mark-buttons');
+        if (markBtns) markBtns.remove();
+
+        // Reset option highlights
+        document.querySelectorAll('.option-item').forEach(opt => {
+            opt.classList.remove('correct', 'selected');
+        });
+    }
+
+    // Update flip hint text
+    const flipHint = document.getElementById('fc-flip-hint');
+    flipHint.innerHTML = state.flipped
+        ? '<a href="javascript:void(0)" onclick="flipCard()">Nhấn vào thẻ để lật lại</a>'
+        : '<a href="javascript:void(0)" onclick="flipCard()">Nhấn để xem đáp án</a>';
+}
+
+function showFlashcardAnswer(q) {
+    // Highlight correct option
+    document.querySelectorAll('.option-item').forEach(opt => {
+        const key = opt.getAttribute('data-key');
+        if (q.answer.includes(key)) {
+            opt.classList.add('correct');
+        }
+    });
+
+    // Render mark buttons into fixed container (outside card)
+    const container = document.getElementById('fc-mark-container');
+    const isReview = state.review.has(q.id);
+    const isMastered = state.mastered.has(q.id);
+
+    container.innerHTML = `
+        <div class="fc-mark-buttons">
+            <button class="btn-mark mark-review ${isReview ? 'active' : ''}" onclick="toggleReview(${q.id})">
+                🔴 Cần ôn lại${isReview ? ' ✓' : ''}
+            </button>
+            <button class="btn-mark mark-mastered ${isMastered ? 'active' : ''}" onclick="toggleMastered(${q.id})">
+                🟢 Đã thuộc${isMastered ? ' ✓' : ''}
+            </button>
+        </div>
+    `;
+}
+
+function toggleMastered(qId) {
+    if (state.mastered.has(qId)) {
+        state.mastered.delete(qId);
+    } else {
+        state.mastered.add(qId);
+        state.review.delete(qId);
+    }
+    saveProgress();
+    updateStats();
+    // Re-render mark buttons
+    const q = state.currentQuestions[state.currentIndex];
+    if (state.flipped) {
+        const marks = document.querySelector('.fc-mark-buttons');
+        if (marks) marks.remove();
+        const ansCard = document.querySelector('.flashcard-answer-card');
+        // Re-add mark buttons
+        const markDiv = document.createElement('div');
+        markDiv.className = 'fc-mark-buttons';
+        const isReview = state.review.has(q.id);
+        const isMastered = state.mastered.has(q.id);
+        markDiv.innerHTML = `
+            <button class="btn-mark mark-review ${isReview ? 'active' : ''}" onclick="toggleReview(${q.id})">
+                🔴 Cần ôn lại${isReview ? ' ✓' : ''}
+            </button>
+            <button class="btn-mark mark-mastered ${isMastered ? 'active' : ''}" onclick="toggleMastered(${q.id})">
+                🟢 Đã thuộc${isMastered ? ' ✓' : ''}
+            </button>
+        `;
+        document.getElementById('question-card').appendChild(markDiv);
+    }
+}
+
+function toggleReview(qId) {
+    if (state.review.has(qId)) {
+        state.review.delete(qId);
+    } else {
+        state.review.add(qId);
+        state.mastered.delete(qId);
+    }
+    saveProgress();
+    updateStats();
+    const q = state.currentQuestions[state.currentIndex];
+    if (state.flipped) {
+        const marks = document.querySelector('.fc-mark-buttons');
+        if (marks) marks.remove();
+        const markDiv = document.createElement('div');
+        markDiv.className = 'fc-mark-buttons';
+        const isReview = state.review.has(q.id);
+        const isMastered = state.mastered.has(q.id);
+        markDiv.innerHTML = `
+            <button class="btn-mark mark-review ${isReview ? 'active' : ''}" onclick="toggleReview(${q.id})">
+                🔴 Cần ôn lại${isReview ? ' ✓' : ''}
+            </button>
+            <button class="btn-mark mark-mastered ${isMastered ? 'active' : ''}" onclick="toggleMastered(${q.id})">
+                🟢 Đã thuộc${isMastered ? ' ✓' : ''}
+            </button>
+        `;
+        document.getElementById('question-card').appendChild(markDiv);
+    }
+}
+
+// ========== NAVIGATION ==========
+function goNext() {
+    const total = state.currentQuestions.length;
+
+    // In quiz mode, check if this is the last question
+    if (state.mode === 'quiz' && state.currentIndex === total - 1 && state.answered) {
+        showQuizResults();
+        return;
+    }
+
+    if (state.currentIndex < total - 1) {
+        state.currentIndex++;
+        state.answered = false;
+        state.flipped = state.mode === 'flashcard';
+        render();
+    }
+}
+
+function goPrev() {
+    if (state.currentIndex > 0) {
+        state.currentIndex--;
+        state.answered = false;
+        state.flipped = state.mode === 'flashcard';
+        render();
+    }
+}
+
+function showQuizResults() {
+    const total = state.currentQuestions.length;
+    const pct = Math.round((state.correct / total) * 100);
+
+    let emoji, title;
+    if (pct >= 90) { emoji = '🎉'; title = 'Xuất sắc!'; }
+    else if (pct >= 70) { emoji = '😊'; title = 'Tốt lắm!'; }
+    else if (pct >= 50) { emoji = '💪'; title = 'Cần cố gắng thêm!'; }
+    else { emoji = '📚'; title = 'Hãy ôn tập thêm nhé!'; }
+
+    const card = document.getElementById('question-card');
+    card.innerHTML = `
+        <div style="text-align:center;padding:32px 0;">
+            <div style="font-size:56px;margin-bottom:12px;">${emoji}</div>
+            <h2 style="font-size:24px;font-weight:800;color:var(--text-primary);margin-bottom:8px;">${title}</h2>
+            <p style="font-size:36px;font-weight:800;color:var(--primary);margin-bottom:24px;">${pct}%</p>
+            <div style="display:flex;justify-content:center;gap:32px;margin-bottom:24px;">
+                <div>
+                    <div style="font-size:24px;font-weight:700;color:var(--success);">${state.correct}</div>
+                    <div style="font-size:13px;color:var(--text-muted);">Đúng</div>
+                </div>
+                <div>
+                    <div style="font-size:24px;font-weight:700;color:var(--error);">${state.wrong}</div>
+                    <div style="font-size:13px;color:var(--text-muted);">Sai</div>
+                </div>
+                <div>
+                    <div style="font-size:24px;font-weight:700;color:var(--text-primary);">${total}</div>
+                    <div style="font-size:13px;color:var(--text-muted);">Tổng</div>
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+                <button class="btn-action primary" onclick="restartSession()">🔄 Làm lại</button>
+                <button class="btn-action" onclick="showWrongReview()">📝 Xem câu sai (${state.wrongList.length})</button>
+            </div>
+            <div id="wrong-review-container"></div>
+        </div>
+    `;
+
+    // Update progress bar to 100%
+    document.getElementById('progress-bar-fill').style.width = '100%';
+    document.getElementById('progress-label').textContent = `Hoàn thành!`;
+}
+
+function showWrongReview() {
+    const container = document.getElementById('wrong-review-container');
+    if (!container) return;
+
+    if (state.wrongList.length === 0) {
+        container.innerHTML = '<p style="margin-top:20px;color:var(--text-muted);text-align:center;">Không có câu sai! 🎉</p>';
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="wrong-review-section">
+            <h3>📝 Các câu trả lời sai</h3>
+            ${state.wrongList.map((item, i) => `
+                <div class="wrong-item">
+                    <div class="wi-q">${i + 1}. ${item.question}</div>
+                    <div class="wi-your">❌ Bạn chọn: ${item.yourAnswer}</div>
+                    <div class="wi-correct">✅ Đáp án: ${item.correctAnswer}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+function reviewWrongQuestions() {
+    document.getElementById('filter-set').value = 'wrong';
+    onFilterChange();
+}
+
+// ========== STATS ==========
+function updateStats() {
+    document.getElementById('stats-practiced').textContent = state.seen.size;
+    document.getElementById('stats-mastered').textContent = state.mastered.size;
+    document.getElementById('wrong-count').textContent = state.wrongHistory.size;
+
+    const pct = state.totalAttempts > 0
+        ? Math.round((state.totalCorrect / state.totalAttempts) * 100) + '%'
+        : '0%';
+    document.getElementById('stats-accuracy').textContent = pct;
+    document.getElementById('header-total').textContent = QUESTIONS.length;
+}
+
+// ========== PERSISTENCE ==========
+function saveProgress() {
+    const data = {
+        mastered: [...state.mastered],
+        review: [...state.review],
+        seen: [...state.seen],
+        wrongHistory: [...state.wrongHistory],
+        totalAttempts: state.totalAttempts,
+        totalCorrect: state.totalCorrect,
+    };
+    localStorage.setItem('mln122_progress', JSON.stringify(data));
+}
+
+function loadProgress() {
+    try {
+        const raw = localStorage.getItem('mln122_progress');
+        if (raw) {
+            const data = JSON.parse(raw);
+            state.mastered = new Set(data.mastered || []);
+            state.review = new Set(data.review || []);
+            state.seen = new Set(data.seen || []);
+            state.wrongHistory = new Set(data.wrongHistory || []);
+            state.totalAttempts = data.totalAttempts || 0;
+            state.totalCorrect = data.totalCorrect || 0;
+        }
+    } catch (e) {
+        console.warn('Failed to load progress:', e);
+    }
+}
+
+function resetProgress() {
+    if (!confirm('Bạn có chắc muốn reset toàn bộ tiến trình? Hành động này không thể hoàn tác.')) return;
+    localStorage.removeItem('mln122_progress');
+    state.mastered = new Set();
+    state.review = new Set();
+    state.seen = new Set();
+    state.wrongHistory = new Set();
+    state.totalAttempts = 0;
+    state.totalCorrect = 0;
+    state.correct = 0;
+    state.wrong = 0;
+    state.wrongList = [];
+    buildSession();
+    render();
+    updateStats();
+}
+
+// ========== KEYBOARD SHORTCUTS ==========
+document.addEventListener('keydown', (e) => {
+    // Navigation
+    if (e.key === 'ArrowRight') goNext();
+    else if (e.key === 'ArrowLeft') goPrev();
+
+    // Flashcard flip
+    if (state.mode === 'flashcard' && (e.key === ' ' || e.key === 'Enter')) {
+        e.preventDefault();
+        flipCard();
+    }
+
+    // Quiz answer with keyboard
+    if (state.mode === 'quiz' && !state.answered) {
+        const keyMap = { 'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', '1': 'A', '2': 'B', '3': 'C', '4': 'D' };
+        const letter = keyMap[e.key.toLowerCase()];
+        if (letter) {
+            const q = state.currentQuestions[state.currentIndex];
+            if (q && q.options[letter]) {
+                quizSelectAnswer(letter, q);
+            }
+        }
+    }
+
+    // Quiz next with Enter/Space after answering
+    if (state.mode === 'quiz' && state.answered && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        goNext();
+    }
+
+    // Flashcard marks
+    if (state.mode === 'flashcard' && state.flipped) {
+        const q = state.currentQuestions[state.currentIndex];
+        if (q) {
+            if (e.key === 'm' || e.key === 'M') toggleMastered(q.id);
+            if (e.key === 'r' || e.key === 'R') toggleReview(q.id);
+        }
+    }
+});
+
+// ========== UTILS ==========
+function shuffleArray(arr) {
+    const shuffled = [...arr];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
+// ========== START ==========
+document.addEventListener('DOMContentLoaded', init);

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLN122 - Ôn thi Kinh tế chính trị Mác-Lênin</title>
+    <meta name="description" content="Ứng dụng ôn thi trắc nghiệm Kinh tế chính trị Mác-Lênin MLN122 với chế độ Quiz và Flashcard">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+
+    <!-- ===== MAIN CONTAINER ===== -->
+    <div class="container">
+
+        <!-- Mode Tabs -->
+        <div class="mode-tabs">
+            <button class="mode-tab" id="tab-quiz" onclick="switchMode('quiz')">Chế độ Quiz</button>
+            <button class="mode-tab active" id="tab-flashcard" onclick="switchMode('flashcard')">Chế độ Flashcard</button>
+        </div>
+
+        <!-- Filters Row -->
+        <div class="filters-row">
+            <div class="filter-group">
+                <label class="filter-label">BỘ LỌC</label>
+                <select id="filter-set" onchange="onFilterChange()">
+                    <option value="all">Tất cả câu hỏi (507 câu)</option>
+                    <option value="wrong">Câu đã sai</option>
+                    <option value="unseen">Câu chưa làm</option>
+                    <option value="review">Câu cần ôn lại</option>
+                    <option value="mastered">Câu đã thuộc</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">DẠNG CÂU</label>
+                <select id="filter-type" onchange="onFilterChange()">
+                    <option value="all" selected>Tất cả dạng câu</option>
+                    <option value="single">Câu 1 đáp án</option>
+                    <option value="multi">Câu nhiều đáp án</option>
+                    <option value="calc">Câu tính toán</option>
+                </select>
+            </div>
+            <div class="filter-check">
+                <label>
+                    <input type="checkbox" id="filter-shuffle" checked onchange="onFilterChange()">
+                    Xáo trộn câu hỏi
+                </label>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-row">
+            <span class="progress-label" id="progress-label">Câu 1/20</span>
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="progress-bar-fill"></div>
+            </div>
+            <span class="progress-stats">
+                <span class="stat-correct" id="stat-correct">Đúng <strong>0</strong></span>
+                <span class="stat-wrong" id="stat-wrong">Sai <strong>0</strong></span>
+            </span>
+            <button class="btn-reset" id="btn-restart" onclick="restartSession()">Làm lại từ đầu</button>
+        </div>
+
+        <!-- ===== QUESTION CARD ===== -->
+        <div class="question-card" id="question-card">
+            <!-- Quiz mode: question label -->
+            <div class="q-badge" id="q-badge">TẤT CẢ CÂU HỎI</div>
+
+            <!-- Question text -->
+            <div class="q-text" id="q-text"></div>
+
+            <!-- Options -->
+            <div class="q-options" id="q-options"></div>
+
+            <!-- Feedback (quiz mode) -->
+            <div class="q-feedback" id="q-feedback" style="display:none;"></div>
+
+            <!-- Flip hint (flashcard mode) -->
+            <div class="fc-flip-hint" id="fc-flip-hint" style="display:none;">
+                <a href="javascript:void(0)" onclick="flipCard()">Nhấn vào thẻ để lật lại</a>
+            </div>
+        </div>
+
+        <!-- Flashcard Mark Buttons (fixed slot to prevent layout shifts) -->
+        <div id="fc-mark-container"></div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons">
+            <button class="btn-nav btn-prev" id="btn-prev" onclick="goPrev()">← Câu trước</button>
+            <button class="btn-nav btn-next" id="btn-next" onclick="goNext()">Câu sau →</button>
+        </div>
+
+
+    </div>
+
+    <script src="questions_clean.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
