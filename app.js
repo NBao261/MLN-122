@@ -138,7 +138,7 @@ function buildSession() {
     }
 
     state.answered = false;
-    state.flipped = state.mode === 'flashcard'; // Auto-show in flashcard
+    state.flipped = true; // Always show in flashcard
 }
 
 function onFilterChange() {
@@ -281,11 +281,7 @@ function renderOptions(q) {
 }
 
 function updateModeUI(q) {
-    // Remove any existing flashcard answer
-    const existingAnswer = document.querySelector('.flashcard-answer-card');
-    if (existingAnswer) existingAnswer.remove();
-
-    if (state.mode === 'flashcard' && state.flipped) {
+    if (state.mode === 'flashcard') {
         showFlashcardAnswer(q);
     }
 }
@@ -352,35 +348,6 @@ function quizSelectAnswer(selected, q) {
 }
 
 // ========== FLASHCARD MODE ==========
-
-function flipCard() {
-    state.flipped = !state.flipped;
-    const q = state.currentQuestions[state.currentIndex];
-
-    if (state.flipped) {
-        showFlashcardAnswer(q);
-        state.seen.add(q.id);
-        saveProgress();
-        updateStats();
-    } else {
-        // Hide answer
-        const ansCard = document.querySelector('.flashcard-answer-card');
-        if (ansCard) ansCard.remove();
-        const markBtns = document.querySelector('.fc-mark-buttons');
-        if (markBtns) markBtns.remove();
-
-        // Reset option highlights
-        document.querySelectorAll('.option-item').forEach(opt => {
-            opt.classList.remove('correct', 'selected');
-        });
-    }
-
-    // Update flip hint text
-    const flipHint = document.getElementById('fc-flip-hint');
-    flipHint.innerHTML = state.flipped
-        ? '<a href="javascript:void(0)" onclick="flipCard()">Nhấn vào thẻ để lật lại</a>'
-        : '<a href="javascript:void(0)" onclick="flipCard()">Nhấn để xem đáp án</a>';
-}
 
 function showFlashcardAnswer(q) {
     // Highlight correct option
@@ -612,10 +579,10 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') goNext();
     else if (e.key === 'ArrowLeft') goPrev();
 
-    // Flashcard flip
+    // Flashcard: Space or Enter goes to next question
     if (state.mode === 'flashcard' && (e.key === ' ' || e.key === 'Enter')) {
         e.preventDefault();
-        flipCard();
+        goNext();
     }
 
     // Quiz answer with keyboard
