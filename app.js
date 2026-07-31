@@ -232,9 +232,6 @@ function render() {
     document.getElementById('q-feedback').style.display = 'none';
     document.getElementById('q-feedback').innerHTML = '';
 
-    // Flashcard: always show answer, hide flip hint
-    const flipHint = document.getElementById('fc-flip-hint');
-    flipHint.style.display = 'none';
 
     // Nav buttons
     document.getElementById('btn-prev').disabled = state.currentIndex === 0;
