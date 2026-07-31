@@ -155,10 +155,20 @@ function render() {
 
     // Progress
     const pct = ((state.currentIndex + 1) / total * 100);
-    document.getElementById('progress-label').textContent = `Câu ${state.currentIndex + 1}/${total}`;
     document.getElementById('progress-bar-fill').style.width = pct + '%';
-    document.getElementById('stat-correct').innerHTML = `Đúng <strong>${state.correct}</strong>`;
-    document.getElementById('stat-wrong').innerHTML = `Sai <strong>${state.wrong}</strong>`;
+
+    if (state.mode === 'flashcard') {
+        // Flashcard: show "Câu X/Y" + percentage, hide Đúng/Sai
+        document.getElementById('progress-label').textContent = `Câu ${state.currentIndex + 1}/${total}`;
+        document.getElementById('stat-correct').innerHTML = `<strong>${Math.round(pct)}%</strong>`;
+        document.getElementById('stat-wrong').style.display = 'none';
+    } else {
+        // Quiz: show Đúng/Sai
+        document.getElementById('progress-label').textContent = `Câu ${state.currentIndex + 1}/${total}`;
+        document.getElementById('stat-correct').innerHTML = `Đúng <strong>${state.correct}</strong>`;
+        document.getElementById('stat-wrong').innerHTML = `Sai <strong>${state.wrong}</strong>`;
+        document.getElementById('stat-wrong').style.display = '';
+    }
 
     // Badge
     const filterLabels = {
