@@ -23,7 +23,7 @@
     "answer": "C",
     "explanation": "",
     "id": 2,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Chọn phương án sai vai trò của cách mạng công nghiệp đối với sự phát triển đó là",
@@ -266,7 +266,7 @@
     "answer": "A",
     "explanation": "",
     "id": 21,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Kinh tế chính trị Mác - Lênin có những chức nào?",
@@ -522,7 +522,7 @@
     "answer": "D",
     "explanation": "",
     "id": 41,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Trên giác độ kinh tế chính trị, lao động trừu tượng là",
@@ -547,7 +547,7 @@
     "answer": "C",
     "explanation": "",
     "id": 43,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Cách mạng công nghiệp lần thứ nhất diễn ra trong thời gian nào?",
@@ -676,7 +676,7 @@
     "answer": "A",
     "explanation": "",
     "id": 53,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Hãy chọn ý đúng khi nói về quan hệ giữa giá trị và giá cả?",
@@ -701,7 +701,7 @@
     "answer": "A",
     "explanation": "",
     "id": 55,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Kinh tế thị trường đã có mầm mống từ trong xã hội nào?",
@@ -804,7 +804,7 @@
     "answer": "C",
     "explanation": "",
     "id": 63,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Những đặc điểm kinh tế cơ bản nhất của chủ nghĩa tư bản độc quyền bao gồm:",
@@ -933,7 +933,7 @@
     "answer": "D",
     "explanation": "",
     "id": 73,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Lao động sản xuất có vai trò gì đối với con người?",
@@ -958,7 +958,7 @@
     "answer": "C",
     "explanation": "",
     "id": 75,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Kinh tế chính trị cổ điển Anh được hình thành và phát triển trong thời kỳ nào?",
@@ -1058,12 +1058,12 @@
       "D": "W= 100000 USD"
     },
     "answer": "A",
-    "explanation": "",
+    "explanation": "W = c + v + m = 100000 + 5000 + (5000 x 200%) = 105000 + 10000 = 115000 USD (cho 1000 đôi dệt). Cho 10.000 đôi = 1.150.000 USD.",
     "id": 83,
     "type": "calc"
   },
   {
-    "question": "W = c + v + mc = 100000 + 5000 = 105000v = 5000 m = m'.v = 2 x 5000 = 10000W = 105000 + 5000 + 10000 = 120000 Nhận xét dưới đây về phương pháp sản xuất giá trị thặng dư tuyệt đối, nhận xét nào là không đúng?",
+    "question": "Nhận xét dưới đây về phương pháp sản xuất giá trị thặng dư tuyệt đối, nhận xét nào là không đúng?",
     "options": {
       "A": "Chủ yếu áp dụng ở giai đoạn đầu của chủ nghĩa tư bản khi kỹ thuật còn thủ công lạc hậu",
       "B": "Giá trị sức lao động không thay đổi",
@@ -1149,7 +1149,7 @@
     "answer": "A",
     "explanation": "",
     "id": 90,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Việt Nam trở thành thành viên chính thức của tổ chức thương mại kinh tế thế giới WTO khi nào?",
@@ -1240,7 +1240,7 @@
     "answer": "C",
     "explanation": "",
     "id": 97,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Đảng và Nhà nước quyết định xây dựng nền kinh tế thị trường định hướng xã hội chủ nghĩa ở nước ta từ Đại hội nào?",
@@ -1278,7 +1278,7 @@
     "answer": "A",
     "explanation": "",
     "id": 100,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Tiền công trong chủ nghĩa tư bản có mấy hình thức?",
@@ -1380,7 +1380,7 @@
     "answer": "B",
     "explanation": "",
     "id": 108,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Hình thức độc quyền dưới dạng Cartel được phổ biến ở Châu âu vào thời gian nào?",
@@ -1406,7 +1406,7 @@
     "answer": "A",
     "explanation": "",
     "id": 110,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Lượng giá trị của đơn vị hàng hoá thay đổi:",
@@ -1545,7 +1545,7 @@
     "answer": "D",
     "explanation": "",
     "id": 121,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Đối tượng nghiên cứu của kinh tế chính trị Mác - Lênin được hiểu là",
@@ -1777,7 +1777,7 @@
     "answer": "B",
     "explanation": "",
     "id": 139,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Cách mạng công nghiệp lần thứ tư được đề cập lần đầu tiên tại ở đâu và năm nào?",
@@ -1957,7 +1957,7 @@
     "answer": "A",
     "explanation": "",
     "id": 153,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Đâu không phải nằm trong tính tất yếu khách quan của công nghiệp hóa, hiện đại hóa ở Việt Nam ?",
@@ -1970,7 +1970,7 @@
     "answer": "D",
     "explanation": "",
     "id": 154,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Một trong những tác động tích cực của độc quyền đối với nền kinh tế đó là",
@@ -2224,7 +2224,7 @@
     "answer": "B",
     "explanation": "",
     "id": 174,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Tiền tệ ra đời là do nhu cầu.",
@@ -2325,7 +2325,7 @@
     "answer": "B",
     "explanation": "",
     "id": 182,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Lượng tỷ suất lợi nhuận là",
@@ -2376,7 +2376,7 @@
     "answer": "A",
     "explanation": "",
     "id": 186,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Loại tiền nào được hiểu là phương tiện thanh toán mà giá trị hay sức mua của nó với tư cách là tiền vượt xa chi phí sản xuất ra nó hay giá trị của nó khi dùng vào việc khác, chứ không dùng làm tiền?",
@@ -2426,7 +2426,7 @@
     "answer": "B",
     "explanation": "",
     "id": 190,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Sản xuất hàng hóa là",
@@ -2551,7 +2551,7 @@
     "answer": "B",
     "explanation": "",
     "id": 200,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Lượng lợi nhuận có thể là",
@@ -2689,7 +2689,7 @@
     "answer": "A",
     "explanation": "",
     "id": 211,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Khi phân chia thể chế theo các yếu tố cấu thành lĩnh vực cốt lõi của xã hội, thể chế được phần chia (nhiều phương án)",
@@ -2752,7 +2752,7 @@
     "answer": "A",
     "explanation": "",
     "id": 216,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Nếu nhà tư bản trả đúng giá trị sức lao động của người công nhân, thì nhà tư bản có thu được giá trị thặng dư hay không?",
@@ -2960,7 +2960,7 @@
     "answer": "D",
     "explanation": "",
     "id": 232,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Điểm giống nhau giữa địa tô chênh lệch và địa tô tuyệt đối là:",
@@ -3152,7 +3152,7 @@
     "answer": "B",
     "explanation": "",
     "id": 247,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Chọn ý đúng về tăng NSLĐ và tăng cường độ lao động:",
@@ -3191,7 +3191,7 @@
     "answer": "C",
     "explanation": "",
     "id": 250,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Tuần hoàn tư bản công nghiệp là sự thống nhất của ba hình thái tuần hoàn:",
@@ -3243,7 +3243,7 @@
     "answer": "C",
     "explanation": "",
     "id": 254,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Căn cư phân chia tư bản bất biến và tư bản khả biến là:",
@@ -3573,7 +3573,7 @@
     "answer": "D",
     "explanation": "",
     "id": 280,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Phân công lao động xã hội được xác định là",
@@ -3672,7 +3672,7 @@
     "answer": "A",
     "explanation": "",
     "id": 288,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Căn cứ vào đâu để phân chia tư bản cố định và tư bản lưu động?",
@@ -3685,7 +3685,7 @@
     "answer": "C",
     "explanation": "",
     "id": 289,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Thuật ngữ \"kinh tế- chính trị\" được sử dụng lần đầu tiên vào năm nào?",
@@ -3722,7 +3722,7 @@
     "answer": "C",
     "explanation": "",
     "id": 292,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Thế nào là lao động phức tạp?",
@@ -3909,7 +3909,7 @@
     "answer": "C",
     "explanation": "",
     "id": 307,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Trong các yếu tố sau đây, yếu tố nào được xác định là thực thể giá trị của hàng hóa?",
@@ -4089,7 +4089,7 @@
     "answer": "B",
     "explanation": "",
     "id": 321,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Quá trình sản xuất tư bản là quá trình sản xuất",
@@ -4138,7 +4138,7 @@
     "answer": "B",
     "explanation": "",
     "id": 325,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Trong các yếu tố sau đây, yếu tố nào là nguồn gốc của giá trị hàng hóa?",
@@ -4175,7 +4175,7 @@
     "answer": "C",
     "explanation": "",
     "id": 328,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Mục đích của sản xuất hàng hóa là thỏa mãn nhu cầu của",
@@ -4238,7 +4238,7 @@
     "answer": "B",
     "explanation": "",
     "id": 333,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Theo quan điểm của KTCT Mác- Lênin, khủng hoảng kinh tế của chủ nghĩa tư bản mang tính",
@@ -4250,7 +4250,7 @@
     "answer": "B",
     "explanation": "",
     "id": 334,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Sản xuất hàng hóa có vai trò gì trong phân công lao động xã hội",
@@ -4299,7 +4299,7 @@
     "answer": "A",
     "explanation": "",
     "id": 338,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Khối lượng giá trị thặng dư (M) được tính bằng công thức",
@@ -4312,7 +4312,7 @@
     "answer": "C",
     "explanation": "",
     "id": 339,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Kinh tế thị trường định hưởng xã hội chủ nghĩa ở Việt Nam thành phần kinh tế nào giữ vai trò là một động lực quan trọng thúc đẩy phát triển kinh tế.",
@@ -4654,20 +4654,20 @@
     "answer": "D",
     "explanation": "",
     "id": 366,
-    "type": "calc"
+    "type": "single"
   },
   {
-    "question": "(Kiểu hỏi tương tự: Gọi W là giá trị hàng hóa, vậy công thức tính giá trị hàng hóa là gì?",
+    "question": "Gọi W là giá trị hàng hóa, vậy công thức tính giá trị hàng hóa là gì?",
     "options": {
-      "A": "Khủng hoàng kinh tế năm 1873",
-      "B": "Khủng hoàng kinh tế năm 1928",
-      "C": "Khùng hoàng kinh tế năm 1973",
-      "D": "Khủng hoàng kinh tế năm 2021"
+      "A": "W = c + v + m",
+      "B": "W = c + v",
+      "C": "W = v + m",
+      "D": "W = (c + v) / m"
     },
     "answer": "A",
     "explanation": "",
     "id": 367,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "*Nguyên nhân của bản chất khủng hoảng kinh tế chủ nghĩa tư bản là:",
@@ -4898,7 +4898,7 @@
     "answer": "D",
     "explanation": "",
     "id": 385,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Đâu là một trong những nguyên nhân dẫn đến độc quyền?",
@@ -5118,7 +5118,7 @@
     "answer": "A",
     "explanation": "",
     "id": 402,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Mục đích nghiên cứu ở cấp độ cao nhất của kinh tế chính trị Mác - Lênin là gì?",
@@ -5231,7 +5231,7 @@
     "answer": "B",
     "explanation": "",
     "id": 411,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Mọi hình thức lạm phát đều làm tăng:",
@@ -5308,7 +5308,7 @@
     "answer": "B",
     "explanation": "",
     "id": 417,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Hàng hóa sức lao động khác hàng hóa thông thường ở chỗ:",
@@ -5384,7 +5384,7 @@
     "answer": "A",
     "explanation": "",
     "id": 423,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Sỡ hữu độc quyền nhà nước là sự kết hợp của:",
@@ -5422,7 +5422,7 @@
     "answer": "A",
     "explanation": "",
     "id": 426,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Tỷ lệ giữa lao động phức tạp và lao động giản đơn tăng lên có ảnh hưởng như thế nào đến lượng giá trị được tạo ra trong một đơn vị thời gian?",
@@ -5461,7 +5461,7 @@
     "answer": "C",
     "explanation": "",
     "id": 429,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Trên giác độ kinh tế chính trị, cầu được hiểu là",
@@ -5499,7 +5499,7 @@
     "answer": "A",
     "explanation": "",
     "id": 432,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Tư bản cố định là:",
@@ -5525,7 +5525,7 @@
     "answer": "A",
     "explanation": "",
     "id": 434,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Hình thức tổ chức và cơ chế thống trị của tư bản tài chính trong chủ nghĩa tư bản ngày nay thay đổi là do:",
@@ -5731,7 +5731,7 @@
     "answer": "A",
     "explanation": "",
     "id": 450,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Loại tái sản xuất nào làm tăng sản phẩm chủ yếu do tăng năng suất lao động và hiệu quả sử dụng các nguồn luc?",
@@ -5847,7 +5847,7 @@
     "answer": "B",
     "explanation": "",
     "id": 459,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Những nhân tố ảnh hưởng đến tỷ suất lợi nhuận đó là:",
@@ -6181,7 +6181,7 @@
     "answer": "A",
     "explanation": "",
     "id": 485,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Một trong những tác động tích cực của quy luật giá trị là gì?",
@@ -6233,7 +6233,7 @@
     "answer": "A",
     "explanation": "",
     "id": 489,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Quá trình lưu thông tư bản là:",
@@ -6388,7 +6388,7 @@
     "answer": "A",
     "explanation": "",
     "id": 501,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Lựa chọn đáp án đúng nhất: Trong nền kinh tế thị trường, hoạt động kinh tế được biểu hiện như thể nào?",
@@ -6466,7 +6466,7 @@
     "answer": "A",
     "explanation": "",
     "id": 507,
-    "type": "calc"
+    "type": "single"
   },
   {
     "question": "Khi nghiên cứu về cách mạng công nghiệp lần thứ nhất, C. Mác đã khái quát tính quy luật của các mạng công nghiệp qua các giai đoạn phát triển đó là:",
@@ -6543,5 +6543,18 @@
     "explanation": "",
     "type": "single",
     "id": 513
+  },
+  {
+    "id": 514,
+    "question": "Cuộc khủng hoảng nào đã làm phá sản doanh nghiệp vừa và nhỏ, các doanh nghiệp lớn còn tồn tại dẫn tới hình thành các doanh nghiệp độc quyền đầu tiên?",
+    "options": {
+      "A": "Khủng hoảng kinh tế năm 1873",
+      "B": "Khủng hoảng kinh tế năm 1928",
+      "C": "Khủng hoảng kinh tế năm 1973",
+      "D": "Khủng hoảng kinh tế năm 2021"
+    },
+    "answer": "A",
+    "explanation": "",
+    "type": "single"
   }
 ]
