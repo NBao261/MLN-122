@@ -65,9 +65,10 @@ function switchMode(mode) {
 
 // ========== SESSION BUILDING ==========
 function buildSession() {
-    const filterSet = document.getElementById('filter-set').value;
-    const filterType = document.getElementById('filter-type').value;
-    const shuffle = document.getElementById('filter-shuffle').checked;
+    const filterSetEl = document.getElementById('filter-set');
+    const filterSet = filterSetEl ? filterSetEl.value : 'all';
+    const filterType = document.getElementById('filter-type') ? document.getElementById('filter-type').value : 'all';
+    const shuffle = document.getElementById('filter-shuffle') ? document.getElementById('filter-shuffle').checked : false;
 
     let pool = [...QUESTIONS];
 
@@ -168,8 +169,9 @@ function render() {
         'multi': ' · NHIỀU ĐÁP ÁN',
         'calc': ' · TÍNH TOÁN'
     };
-    const filterVal = document.getElementById('filter-set').value;
-    const typeVal = document.getElementById('filter-type').value;
+    const filterSetEl = document.getElementById('filter-set');
+    const filterVal = filterSetEl ? filterSetEl.value : 'all';
+    const typeVal = document.getElementById('filter-type') ? document.getElementById('filter-type').value : 'all';
     document.getElementById('q-badge').textContent = `${filterLabels[filterVal] || 'TẤT CẢ'}${typeLabels[typeVal] || ''} (${total} CÂU)`;
 
     // Question
