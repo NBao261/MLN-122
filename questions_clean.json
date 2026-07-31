@@ -1957,7 +1957,7 @@
     "answer": "A",
     "explanation": "",
     "id": 153,
-    "type": "single"
+    "type": "formula"
   },
   {
     "question": "Đâu không phải nằm trong tính tất yếu khách quan của công nghiệp hóa, hiện đại hóa ở Việt Nam ?",
@@ -2426,7 +2426,7 @@
     "answer": "B",
     "explanation": "",
     "id": 190,
-    "type": "single"
+    "type": "formula"
   },
   {
     "question": "Sản xuất hàng hóa là",
@@ -2752,7 +2752,7 @@
     "answer": "A",
     "explanation": "",
     "id": 216,
-    "type": "single"
+    "type": "formula"
   },
   {
     "question": "Nếu nhà tư bản trả đúng giá trị sức lao động của người công nhân, thì nhà tư bản có thu được giá trị thặng dư hay không?",
@@ -4138,7 +4138,7 @@
     "answer": "B",
     "explanation": "",
     "id": 325,
-    "type": "single"
+    "type": "formula"
   },
   {
     "question": "Trong các yếu tố sau đây, yếu tố nào là nguồn gốc của giá trị hàng hóa?",
@@ -4299,7 +4299,7 @@
     "answer": "A",
     "explanation": "",
     "id": 338,
-    "type": "single"
+    "type": "formula"
   },
   {
     "question": "Khối lượng giá trị thặng dư (M) được tính bằng công thức",
@@ -4312,7 +4312,7 @@
     "answer": "C",
     "explanation": "",
     "id": 339,
-    "type": "single"
+    "type": "formula"
   },
   {
     "question": "Kinh tế thị trường định hưởng xã hội chủ nghĩa ở Việt Nam thành phần kinh tế nào giữ vai trò là một động lực quan trọng thúc đẩy phát triển kinh tế.",
@@ -4654,7 +4654,7 @@
     "answer": "D",
     "explanation": "",
     "id": 366,
-    "type": "single"
+    "type": "formula"
   },
   {
     "question": "Gọi W là giá trị hàng hóa, vậy công thức tính giá trị hàng hóa là gì?",
@@ -4667,7 +4667,7 @@
     "answer": "A",
     "explanation": "",
     "id": 367,
-    "type": "single"
+    "type": "formula"
   },
   {
     "question": "*Nguyên nhân của bản chất khủng hoảng kinh tế chủ nghĩa tư bản là:",
@@ -4898,7 +4898,7 @@
     "answer": "D",
     "explanation": "",
     "id": 385,
-    "type": "single"
+    "type": "formula"
   },
   {
     "question": "Đâu là một trong những nguyên nhân dẫn đến độc quyền?",
@@ -5027,7 +5027,7 @@
     "answer": "C",
     "explanation": "",
     "id": 395,
-    "type": "single"
+    "type": "formula"
   },
   {
     "question": "Mì ăn liền, khăn giấy, bim bim... là loại hàng hóa nào?",
@@ -5499,7 +5499,7 @@
     "answer": "A",
     "explanation": "",
     "id": 432,
-    "type": "single"
+    "type": "formula"
   },
   {
     "question": "Tư bản cố định là:",
@@ -6233,7 +6233,7 @@
     "answer": "A",
     "explanation": "",
     "id": 489,
-    "type": "single"
+    "type": "formula"
   },
   {
     "question": "Quá trình lưu thông tư bản là:",

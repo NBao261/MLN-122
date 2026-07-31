@@ -167,7 +167,8 @@ function render() {
         'all': '',
         'single': ' · 1 ĐÁP ÁN',
         'multi': ' · NHIỀU ĐÁP ÁN',
-        'calc': ' · TÍNH TOÁN'
+        'calc': ' · TÍNH TOÁN',
+        'formula': ' · CÔNG THỨC'
     };
     const filterSetEl = document.getElementById('filter-set');
     const filterVal = filterSetEl ? filterSetEl.value : 'all';
