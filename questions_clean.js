@@ -6467,5 +6467,81 @@ const QUESTIONS = [
     "explanation": "",
     "id": 507,
     "type": "calc"
+  },
+  {
+    "question": "Khi nghiên cứu về cách mạng công nghiệp lần thứ nhất, C. Mác đã khái quát tính quy luật của các mạng công nghiệp qua các giai đoạn phát triển đó là:",
+    "options": {
+      "A": "Hiệp tác đơn giản, lao động thủ công, lao động phức tạp",
+      "B": "Hiệp tác đơn giản, công trường thủ công, công nghiệp hóa",
+      "C": "Hiệp tác đơn giản, sản xuất thủ công, sản xuất hiện đại",
+      "D": "Hiệp tác đơn giản, công trường thủ công, đại công nghiệp"
+    },
+    "answer": "D",
+    "explanation": "",
+    "type": "single",
+    "id": 508
+  },
+  {
+    "question": "Nguồn gốc nào không đúng với nguồn vốn công nghiệp hóa ở các nước tư bản cổ điển?",
+    "options": {
+      "A": "Cướp bóc thuộc địa",
+      "B": "Khai thác lao động làm thuê",
+      "C": "Làm phá sản những người sản xuất nhỏ trong nông nghiệp",
+      "D": "Đi vay nhà nước"
+    },
+    "answer": "D",
+    "explanation": "",
+    "type": "single",
+    "id": 509
+  },
+  {
+    "question": "Xuất khẩu hàng hóa là một trong những đặc điểm của:",
+    "options": {
+      "A": "Sản xuất hàng hóa giản đơn",
+      "B": "Phương thức sản xuất tư bản chủ nghĩa",
+      "C": "Giai đoạn chủ nghĩa tư bản tự do cạnh tranh",
+      "D": "Giai đoạn chủ nghĩa tư bản độc quyền"
+    },
+    "answer": "D",
+    "explanation": "",
+    "type": "single",
+    "id": 510
+  },
+  {
+    "question": "Tích lũy tư bản là gì?",
+    "options": {
+      "A": "Tư bản hóa tư liệu tiêu dùng",
+      "B": "Tư bản hóa giá trị thặng dư",
+      "C": "Tư bản hóa sức lao động",
+      "D": "Tư bản hóa giá trị sản xuất"
+    },
+    "answer": "B",
+    "explanation": "",
+    "type": "single",
+    "id": 511
+  },
+  {
+    "question": "Ai là người đầu tiên đưa ra khái niệm \"kinh tế chính trị\"?",
+    "options": {
+      "A": "Francois Quesney",
+      "B": "Antoine Montchretiên",
+      "C": "William Petty"
+    },
+    "answer": "B",
+    "explanation": "",
+    "type": "single",
+    "id": 512
+  },
+  {
+    "question": "Về kinh tế, xuất khẩu tư bản nhà nước thường hướng vào:",
+    "options": {
+      "A": "Ngành kết cấu hạ tầng",
+      "B": "Ngành có vốn chu chuyển nhanh",
+      "C": "Ngành công nghệ mới"
+    },
+    "answer": "A",
+    "explanation": "",
+    "type": "single",
+    "id": 513
   }
 ];
