@@ -6609,5 +6609,18 @@ const QUESTIONS = [
       "A"
     ],
     "type": "1_option"
+  },
+  {
+    "id": 519,
+    "question": "Cuộc khủng hoảng nào đã làm phá sản doanh nghiệp vừa và nhỏ, các doanh nghiệp lớn còn tồn tại dẫn tới hình thành các doanh nghiệp độc quyền đầu tiên?",
+    "options": {
+      "A": "Khủng hoàng kinh tế năm 1873",
+      "B": "Khủng hoàng kinh tế năm 1928",
+      "C": "Khùng hoàng kinh tế năm 1973",
+      "D": "Khủng hoàng kinh tế năm 2021"
+    },
+    "answer": "A",
+    "type": "single",
+    "explanation": ""
   }
 ];
