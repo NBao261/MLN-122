@@ -98,7 +98,7 @@ function buildSession() {
     // Restore or reset progress for this specific filter combination
     const finalFilterSet = document.getElementById('filter-set') ? document.getElementById('filter-set').value : 'all';
     const finalFilterType = document.getElementById('filter-type') ? document.getElementById('filter-type').value : 'all';
-    const filterKey = `${finalFilterSet}|${finalFilterType}|${shuffle}`;
+    const filterKey = `${state.mode}|${finalFilterSet}|${finalFilterType}|${shuffle}`;
     
     if (!state.filterProgress) state.filterProgress = {};
     
@@ -238,8 +238,19 @@ function render() {
 
     // In quiz mode, next is disabled until answered
     if (state.mode === 'quiz') {
-        document.getElementById('btn-next').disabled = !state.answered;
-        document.getElementById('btn-next').textContent = state.currentIndex === total - 1 ? 'Xem kết quả →' : 'Câu sau →';
+        const isMulti = q.type === 'multi' || q.answer.length > 1;
+        if (!state.answered) {
+            if (isMulti) {
+                document.getElementById('btn-next').disabled = !(state.currentSelection && state.currentSelection.length > 0);
+                document.getElementById('btn-next').textContent = 'Kiểm tra';
+            } else {
+                document.getElementById('btn-next').disabled = true;
+                document.getElementById('btn-next').textContent = 'Câu sau →';
+            }
+        } else {
+            document.getElementById('btn-next').disabled = false;
+            document.getElementById('btn-next').textContent = state.currentIndex === total - 1 ? 'Xem kết quả →' : 'Câu sau →';
+        }
     } else {
         document.getElementById('btn-next').disabled = state.currentIndex === total - 1;
         document.getElementById('btn-next').textContent = 'Câu sau →';
@@ -252,6 +263,9 @@ function render() {
 function renderOptions(q) {
     const container = document.getElementById('q-options');
     container.innerHTML = '';
+    
+    // Reset selection for this question if not answered
+    if (!state.answered) state.currentSelection = [];
 
     const keys = Object.keys(q.options);
 
@@ -289,6 +303,27 @@ function updateModeUI(q) {
 // ========== QUIZ MODE ==========
 function quizSelectAnswer(selected, q) {
     if (state.answered) return;
+
+    const isMulti = q.type === 'multi' || q.answer.length > 1;
+
+    if (isMulti) {
+        const selectedEl = document.querySelector(`.option-item[data-key="${selected}"]`);
+        if (!state.currentSelection) state.currentSelection = [];
+        
+        const idx = state.currentSelection.indexOf(selected);
+        if (idx > -1) {
+            state.currentSelection.splice(idx, 1);
+            selectedEl.classList.remove('selected');
+        } else {
+            state.currentSelection.push(selected);
+            selectedEl.classList.add('selected');
+        }
+        
+        // Re-evaluate the Kiểm tra button
+        document.getElementById('btn-next').disabled = state.currentSelection.length === 0;
+        return; // Don't check answer yet
+    }
+
     state.answered = true;
 
     const isCorrect = selected === q.answer;
@@ -384,6 +419,64 @@ function showExplanation(q) {
 // ========== NAVIGATION ==========
 function goNext() {
     const total = state.currentQuestions.length;
+    const q = state.currentQuestions[state.currentIndex];
+    const isMulti = q && (q.type === 'multi' || q.answer.length > 1);
+
+    // If quiz mode, multi-select, and not answered -> check answer instead of going next
+    if (state.mode === 'quiz' && !state.answered && isMulti) {
+        if (!state.currentSelection || state.currentSelection.length === 0) return;
+        
+        state.answered = true;
+        
+        let correctAnswers = Array.isArray(q.answer) ? q.answer : q.answer.split('');
+        let selectedSorted = [...state.currentSelection].sort().join('');
+        let correctSorted = [...correctAnswers].sort().join('');
+        const isCorrect = selectedSorted === correctSorted;
+        
+        const options = document.querySelectorAll('.option-item');
+        options.forEach(opt => {
+            const key = opt.getAttribute('data-key');
+            opt.classList.add('disabled');
+            if (correctAnswers.includes(key)) {
+                opt.classList.add('correct');
+            }
+        });
+        
+        if (isCorrect) {
+            state.correct++;
+            state.totalCorrect++;
+        } else {
+            state.currentSelection.forEach(key => {
+                if (!correctAnswers.includes(key)) {
+                    const el = document.querySelector(`.option-item[data-key="${key}"]`);
+                    if (el) {
+                        el.classList.add('wrong');
+                        el.style.animation = 'shake 0.4s ease';
+                    }
+                }
+            });
+            
+            state.wrong++;
+            state.wrongList.push({
+                question: q.question,
+                yourAnswer: state.currentSelection.sort().map(k => k + '. ' + (q.options[k] || k)).join('<br>'),
+                correctAnswer: correctAnswers.sort().map(k => k + '. ' + (q.options[k] || k)).join('<br>')
+            });
+            state.wrongHistory.add(q.id);
+        }
+        
+        state.totalAttempts++;
+        state.seen.add(q.id);
+        showExplanation(q);
+        
+        document.getElementById('btn-next').textContent = state.currentIndex === total - 1 ? 'Xem kết quả →' : 'Câu sau →';
+        document.getElementById('stat-correct').innerHTML = `Đúng <strong>${state.correct}</strong>`;
+        document.getElementById('stat-wrong').innerHTML = `Sai <strong>${state.wrong}</strong>`;
+        
+        saveProgress();
+        updateStats();
+        return;
+    }
 
     // In quiz mode, check if this is the last question
     if (state.mode === 'quiz' && state.currentIndex === total - 1 && state.answered) {
@@ -495,7 +588,7 @@ function saveProgress() {
     const filterType = document.getElementById('filter-type') ? document.getElementById('filter-type').value : 'all';
     const filterShuffle = document.getElementById('filter-shuffle') ? document.getElementById('filter-shuffle').checked : false;
     
-    const filterKey = `${filterSet}|${filterType}|${filterShuffle}`;
+    const filterKey = `${state.mode}|${filterSet}|${filterType}|${filterShuffle}`;
     
     if (!state.filterProgress) state.filterProgress = {};
     state.filterProgress[filterKey] = {
