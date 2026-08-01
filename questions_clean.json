@@ -5896,12 +5896,12 @@
       "D": "Hàng hóa phong phú"
     },
     "answer": "A",
-    "explanation": "",
+    "explanation": "(Điều gì xảy ra nếu cung lớn hơn cầu? ->B)",
     "id": 463,
     "type": "single"
   },
   {
-    "question": "(Điều gì xảy ra nếu cung lớn hơn cầu? ->B) Thế nào là thời gian lao động xã hội cần thiết?",
+    "question": "Thế nào là thời gian lao động xã hội cần thiết?",
     "options": {
       "A": "Là khoảng thời gian sản xuất của tuyệt đại bộ phận hàng hóa",
       "B": "Là khoảng thời gian cần thiết để sản xuất ra một loại hàng hóa nhất định trong điều kiện trình độ kỹ thuật trung bình, trình độ khéo léo trung bình và cường độ lao động trung bình",
