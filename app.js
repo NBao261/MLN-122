@@ -54,6 +54,7 @@ function switchMode(mode) {
     // Reload progress for the new mode
     buildSession();
     render();
+    saveProgress();
 }
 
 // ========== SESSION BUILDING ==========
