@@ -4965,7 +4965,7 @@ const QUESTIONS = [
     "type": "single"
   },
   {
-    "question": "Biểu hiện mới của xuất khẩu tư bản ngày nay đó là:",
+    "question": "Dịch vụ là loại hàng hóa nào?",
     "options": {
       "A": "Hàng hóa vô hình",
       "B": "Hàng hoa hữu hình",
@@ -6620,6 +6620,20 @@ const QUESTIONS = [
       "D": "Khủng hoàng kinh tế năm 2021"
     },
     "answer": "A",
+    "type": "single",
+    "explanation": ""
+  },
+  {
+    "id": 520,
+    "question": "Biểu hiện mới của xuất khẩu tư bản ngày nay đó là:",
+    "options": {
+      "A": "Dòng đầu tư chảy qua lại giữa các nước tư bản phát triển với nhau",
+      "B": "Vai trò của các công ty xuyên quốc gia trong xuất khấu tư bản - đặt biệt đầu tư trực tiếp nước ngoài (FDI) càng lớn",
+      "C": "Hình thức xuất khẩu đa dạng",
+      "D": "Dựa trên nguyên tắc cùng có lợi",
+      "E": "Tất cả phương án trên"
+    },
+    "answer": "E",
     "type": "single",
     "explanation": ""
   }
