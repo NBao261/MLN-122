@@ -108,6 +108,7 @@ function buildSession() {
         state.correct = saved.correct || 0;
         state.wrong = saved.wrong || 0;
         state.wrongList = saved.wrongList || [];
+        state.quizAnswers = saved.quizAnswers || {};
         
         if (saved.currentQuestionId) {
             const idx = state.currentQuestions.findIndex(q => q.id === saved.currentQuestionId);
@@ -138,9 +139,11 @@ function buildSession() {
         state.correct = 0;
         state.wrong = 0;
         state.wrongList = [];
+        state.quizAnswers = {};
     }
 
-    state.answered = false;
+    const currentQ = state.currentQuestions && state.currentQuestions[state.currentIndex];
+    state.answered = !!(state.quizAnswers && currentQ && state.quizAnswers[currentQ.id]);
     state.flipped = true; // Always show in flashcard
 }
 
@@ -154,6 +157,7 @@ function restartSession() {
     state.correct = 0;
     state.wrong = 0;
     state.wrongList = [];
+    state.quizAnswers = {};
     state.currentIndex = 0;
     state.answered = false;
     state.flipped = state.mode === 'flashcard';
@@ -288,6 +292,30 @@ function renderOptions(q) {
         container.appendChild(div);
     });
 
+    if (state.mode === 'quiz' && state.answered && state.quizAnswers && state.quizAnswers[q.id]) {
+        const ans = state.quizAnswers[q.id];
+        
+        let correctArr = [];
+        if (Array.isArray(q.answer)) correctArr = q.answer;
+        else if (q.type === 'multi' || q.answer.length > 1) correctArr = q.answer.split('');
+        else correctArr = [q.answer];
+
+        const options = container.querySelectorAll('.option-item');
+        options.forEach(opt => {
+            const key = opt.getAttribute('data-key');
+            opt.classList.add('disabled');
+            
+            if (correctArr.includes(key)) {
+                opt.classList.add('correct');
+            }
+            
+            if (ans.selected.includes(key) && !correctArr.includes(key)) {
+                opt.classList.add('wrong');
+            }
+        });
+        showExplanation(q);
+    }
+
     // If flashcard mode and flipped, show answer
     if (state.mode === 'flashcard' && state.flipped) {
         showFlashcardAnswer(q);
@@ -325,6 +353,12 @@ function quizSelectAnswer(selected, q) {
     }
 
     state.answered = true;
+
+    if (!state.quizAnswers) state.quizAnswers = {};
+    state.quizAnswers[q.id] = {
+        selected: [selected],
+        isCorrect: selected === q.answer
+    };
 
     const isCorrect = selected === q.answer;
 
@@ -433,6 +467,12 @@ function goNext() {
         let correctSorted = [...correctAnswers].sort().join('');
         const isCorrect = selectedSorted === correctSorted;
         
+        if (!state.quizAnswers) state.quizAnswers = {};
+        state.quizAnswers[q.id] = {
+            selected: [...state.currentSelection],
+            isCorrect: isCorrect
+        };
+        
         const options = document.querySelectorAll('.option-item');
         options.forEach(opt => {
             const key = opt.getAttribute('data-key');
@@ -487,7 +527,8 @@ function goNext() {
 
     if (state.currentIndex < total - 1) {
         state.currentIndex++;
-        state.answered = false;
+        const nextQ = state.currentQuestions[state.currentIndex];
+        state.answered = !!(state.quizAnswers && state.quizAnswers[nextQ.id]);
         state.flipped = state.mode === 'flashcard';
         render();
         saveProgress();
@@ -497,7 +538,8 @@ function goNext() {
 function goPrev() {
     if (state.currentIndex > 0) {
         state.currentIndex--;
-        state.answered = false;
+        const prevQ = state.currentQuestions[state.currentIndex];
+        state.answered = !!(state.quizAnswers && state.quizAnswers[prevQ.id]);
         state.flipped = state.mode === 'flashcard';
         render();
         saveProgress();
@@ -597,6 +639,7 @@ function saveProgress() {
         correct: state.correct,
         wrong: state.wrong,
         wrongList: state.wrongList,
+        quizAnswers: state.quizAnswers
     };
 
     const data = {
