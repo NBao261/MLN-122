@@ -41,15 +41,19 @@ function init() {
 
 // ========== MODE SWITCH ==========
 function switchMode(mode) {
+    if (state.mode === mode) return;
+    
+    // Save progress for current mode before switching
+    saveProgress();
+    
     state.mode = mode;
-    state.answered = false;
-    state.flipped = mode === 'flashcard'; // Auto-show answer in flashcard
 
     document.getElementById('tab-quiz').classList.toggle('active', mode === 'quiz');
     document.getElementById('tab-flashcard').classList.toggle('active', mode === 'flashcard');
 
+    // Reload progress for the new mode
+    buildSession();
     render();
-    saveProgress();
 }
 
 // ========== SESSION BUILDING ==========
