@@ -92,21 +92,30 @@ function buildSession() {
         if (document.getElementById('filter-type')) document.getElementById('filter-type').value = 'all';
     }
 
-    // Shuffle
-    if (shuffle) {
-        pool = shuffleArray(pool);
-    }
-
-    state.currentQuestions = pool;
-    
     // Restore or reset progress for this specific filter combination
     const finalFilterSet = document.getElementById('filter-set') ? document.getElementById('filter-set').value : 'all';
     const finalFilterType = document.getElementById('filter-type') ? document.getElementById('filter-type').value : 'all';
     const filterKey = `${state.mode}|${finalFilterSet}|${finalFilterType}|${shuffle}`;
     
     if (!state.filterProgress) state.filterProgress = {};
-    
     const saved = state.filterProgress[filterKey];
+
+    // Shuffle
+    if (shuffle) {
+        if (saved && saved.shuffledIds && saved.shuffledIds.length === pool.length) {
+            const orderMap = new Map(saved.shuffledIds.map((id, i) => [id, i]));
+            pool.sort((a, b) => {
+                const orderA = orderMap.has(a.id) ? orderMap.get(a.id) : 999999;
+                const orderB = orderMap.has(b.id) ? orderMap.get(b.id) : 999999;
+                return orderA - orderB;
+            });
+        } else {
+            pool = shuffleArray(pool);
+        }
+    }
+
+    state.currentQuestions = pool;
+    
     if (saved) {
         state.currentIndex = saved.currentIndex || 0;
         state.correct = saved.correct || 0;
@@ -643,7 +652,8 @@ function saveProgress() {
         correct: state.correct,
         wrong: state.wrong,
         wrongList: state.wrongList,
-        quizAnswers: state.quizAnswers
+        quizAnswers: state.quizAnswers,
+        shuffledIds: state.currentQuestions.map(question => question.id)
     };
 
     const data = {
@@ -764,4 +774,5 @@ function shuffleArray(arr) {
 }
 
 // ========== START ==========
+window.addEventListener('beforeunload', () => saveProgress());
 document.addEventListener('DOMContentLoaded', init);
